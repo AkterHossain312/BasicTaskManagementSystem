@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Interface
+{
+    public interface IPagination
+    {
+        int PageSize { get; set; }
+        int PageNo { get; set; }
+        int Total { get; set; }
+        int ToSkip();
+        int ToTake();
+    }
+}
