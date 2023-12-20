@@ -1,6 +1,6 @@
 using Application.Helper;
 using Application.Mapping;
-
+using BasicTaskManagementSystem.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +17,15 @@ builder.Services.AddCors(feature =>
             .AllowAnyMethod()
     ));
 
+builder.Services.AddJwtConfiguration(builder.Configuration);
+builder.Services.AddIdentityOptions();
 builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddMediatR(x=>x.RegisterServicesFromAssembly(typeof(RegisterApplication).Assembly));
-
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHttpContextAccessor();

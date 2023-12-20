@@ -27,7 +27,7 @@ namespace Framework.Logging
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<FrameworkDbContext>();
-                    optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DbConnectionString"));
+                    optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ConnectionStrings:DefaultConnectionString"));
                     _context = new FrameworkDbContext(optionsBuilder.Options);
                 }
             }

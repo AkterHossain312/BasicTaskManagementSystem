@@ -1,19 +1,14 @@
-﻿using Application.Interface;
-using Infrastructure;
+﻿using System.Linq.Expressions;
+using Domain.Models;
+using Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Implementation
+namespace Infrastructure.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseModel
     {
-        private readonly TaskManagementDbContext _context;
-        private readonly DbSet<TEntity> _table = null;
+        public readonly TaskManagementDbContext _context;
+        public readonly DbSet<TEntity> _table = null;
 
         public GenericRepository(TaskManagementDbContext context)
         {
