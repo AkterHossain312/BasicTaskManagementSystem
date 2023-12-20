@@ -18,4 +18,6 @@ namespace Application.ResponseModels
         public IEnumerable<T> Data { get; set; }
         public IPagination Pagination { get; set; }
     }
+
+    
 }

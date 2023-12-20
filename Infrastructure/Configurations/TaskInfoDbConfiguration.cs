@@ -17,15 +17,19 @@ namespace Infrastructure.Configurations
         {
             builder.ToTable(TableNames.Tasks);
             builder.HasKey(t => t.Id);
+
             builder.Property(p => p.Title)
                 .HasMaxLength(300)
                 .IsRequired();
+
             builder.Property(p => p.Description)
                 .HasMaxLength(300);
+
             builder.Property(p => p.DueDate)
                 .HasColumnType(DbDataType.Date);
 
-            builder.Property(p => p.Status).HasConversion<int>();
+            builder.Property(p => p.Status)
+                .HasConversion<int>();
 
         }
     }

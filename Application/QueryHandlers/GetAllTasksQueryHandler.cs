@@ -42,7 +42,7 @@ namespace Application.QueryHandlers
             var result = TaskList
                 .Select(y => new TaskViewModel()
                 {
-                    Id = y.Id,
+                    
                     Title = y.Title,
                     Description = y.Description,
                     Status = y.Status,

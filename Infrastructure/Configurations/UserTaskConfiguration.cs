@@ -15,15 +15,20 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<UserTask> builder)
         {
             builder.ToTable(TableNames.UserTask);
-            builder.Property(p => p.UserId)
-                .IsRequired();
-            builder.Property(p => p.TaskId)
-                .IsRequired();
+            builder.Property(p => p.UserId);
+            builder.Property(p => p.TaskId);
 
             builder.HasKey(x => new { x.TaskId, x.UserId });
 
-            builder.HasOne(x=>x.User).WithMany(x=>x.UsertTasks).HasForeignKey(x=>x.UserId);
-            builder.HasOne(x=>x.Tasks).WithMany(x=>x.UserTasks).HasForeignKey(x=>x.TaskId);
+            builder.HasOne(x=>x.User)
+                .WithMany(x=>x.UsertTasks)
+                .HasForeignKey(x=>x.UserId)
+                .IsRequired();
+
+            builder.HasOne(x=>x.Tasks)
+                .WithMany(x=>x.UserTasks)
+                .HasForeignKey(x=>x.TaskId)
+                .IsRequired();
 
 
 

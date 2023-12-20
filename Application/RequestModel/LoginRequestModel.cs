@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.RequestModel
 {
-    public class RegisterRequestModel
+    public class LoginRequestModel
     {
-        public string FullName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string RoleName { get; set; }
     }
 }

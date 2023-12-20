@@ -1,6 +1,11 @@
 using Application.Helper;
 using Application.Mapping;
 using BasicTaskManagementSystem.Extensions;
+using Dependency;
+using System.Configuration;
+using WebApi.Constants;
+using WebApi.DependencieRegister;
+using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +22,7 @@ builder.Services.AddCors(feature =>
             .AllowAnyMethod()
     ));
 
+builder.Services.AddAllRegisterDependencies(builder.Configuration);
 builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.AddIdentityOptions();
 builder.Services.AddControllers();
@@ -30,13 +36,18 @@ builder.Services.AddMediatR(x=>x.RegisterServicesFromAssembly(typeof(RegisterApp
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHttpContextAccessor();
 
+builder.Services
+               .RegisterDbContext(builder.Configuration)
+               .AddServices();            
+               
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint(ConfigurationConstants.SwaggerUrl, ConfigurationConstants.SwaggerName));
 }
 
 app.UseHttpsRedirection();

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Exception
+namespace Infrastructure.Exceptions
 {
-    public class DomainException : System.Exception
+    public class DomainException : Exception
     {
         public DomainException(string msg) : base(msg)
         {

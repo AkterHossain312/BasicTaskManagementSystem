@@ -8,18 +8,18 @@ namespace Infrastructure.Repositories
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseModel
     {
         public readonly TaskManagementDbContext _context;
-        public readonly DbSet<TEntity> _table = null;
+        public readonly DbSet<TEntity> _dbSet;
 
         public GenericRepository(TaskManagementDbContext context)
         {
             _context = context;
-            _table = _context.Set<TEntity>();
+            _dbSet = _context.Set<TEntity>();
         }
 
         public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
-            IQueryable<TEntity> query = _table;
+            IQueryable<TEntity> query = _dbSet;
 
             if (filter != null)
             {
@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories
         public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
-            IQueryable<TEntity> query = _table;
+            IQueryable<TEntity> query = _dbSet;
 
             if (filter != null)
             {
@@ -69,37 +69,47 @@ namespace Infrastructure.Repositories
         }
         public async Task<TEntity> GetByIdAsync(object id)
         {
-            return await _table.FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public async Task InsertAsync(TEntity entity)
         {
-            await _table.AddAsync(entity);
+            await _dbSet.AddAsync(entity);
 
         }
 
         public async Task UpdateAsync(TEntity entityToUpdate)
         {
-            _table.Update(entityToUpdate);
+            _dbSet.Update(entityToUpdate);
             await Task.CompletedTask;
         }
 
         public async Task DeleteAsync(object id)
         {
-            TEntity entityToDelete = _table.Find(id);
+            TEntity entityToDelete = _dbSet.Find(id);
             await DeleteAsync(entityToDelete);
 
         }
 
         public async Task DeleteAsync(TEntity entityToDelete)
         {
-            _table.Remove(entityToDelete);
+            _dbSet.Remove(entityToDelete);
             await Task.CompletedTask;
         }
 
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IReadOnlyList<TEntity>> GetAllList()
+        {
+            return await _dbSet.ToListAsync();
+        }
+
+        public async Task InsertRange(IEnumerable<TEntity> entity)
+        {
+            await _dbSet.AddRangeAsync(entity);
         }
     }
 }

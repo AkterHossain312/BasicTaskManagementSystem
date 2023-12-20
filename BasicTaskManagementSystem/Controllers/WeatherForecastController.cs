@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicTaskManagementSystem.Controllers
@@ -17,7 +18,7 @@ namespace BasicTaskManagementSystem.Controllers
         {
             _logger = logger;
         }
-
+                
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {

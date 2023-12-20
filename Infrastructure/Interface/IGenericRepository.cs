@@ -14,10 +14,12 @@ namespace Infrastructure.Interface
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "");
         Task<TEntity> GetByIdAsync(object id);
+        Task InsertRange(IEnumerable<TEntity> entity);
         Task InsertAsync(TEntity entity);
         Task DeleteAsync(object id);
         Task DeleteAsync(TEntity entityToDelete);
         Task UpdateAsync(TEntity entityToUpdate);
         Task SaveAsync();
+        Task<IReadOnlyList<TEntity>> GetAllList();
     }
 }
