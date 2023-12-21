@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Commands;
+using Domain.Models;
 
 namespace Application.Mapping
 {
@@ -10,7 +12,10 @@ namespace Application.Mapping
     {
         public TaskMappingProfile()
         {
-           
+            CreateMap<AddTaskCommand, Tasks>();
+            CreateMap<UserTaskCommand, UserTask>();
+            CreateMap<UpdateTaskCommand, Tasks>();
+            CreateMap<DeleteTaskByIdCommand, Tasks>();
         }
     }
 }

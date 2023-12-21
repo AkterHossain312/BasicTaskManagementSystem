@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Commands;
 using Application.RequestModel;
 using Application.ResponseModels;
 
@@ -14,7 +15,7 @@ namespace Application.Mapping
     {
         public AuthMappingProfile()
         {
-            CreateMap<User, RegisterRequestModel>().ReverseMap();
+            CreateMap<User, RegisterCommand>().ReverseMap();
             CreateMap<User, UserResponseModel>()
                 .ForMember(x => x.RoleName,
                     opt => opt.MapFrom(x => x.UserRoles.Single().Role.Name))

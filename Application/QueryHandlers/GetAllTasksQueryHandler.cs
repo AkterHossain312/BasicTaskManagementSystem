@@ -28,21 +28,19 @@ namespace Application.QueryHandlers
 
         public async Task<PagedResponse<TaskViewModel>> Handle(GetAllTaskQuery request, CancellationToken cancellationToken)
         {
-            int total = 0;
-            
+            var userId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault()?.Value);
+
             var TaskList = await _context.Tasks
-                .Where(a => a.Title.Contains(request.SearchText ?? ""))
+                .Where(a => a.Title.Contains(request.SearchText ?? "") && a.UserId == userId)
                 .OrderBy(x => x.Title)
                 .Skip(request.ToPagination().ToSkip())
                 .Take(request.ToPagination().ToTake())
                 .ToListAsync(cancellationToken);
 
-            total = await _context.Tasks.CountAsync(cancellationToken);
-
             var result = TaskList
                 .Select(y => new TaskViewModel()
                 {
-                    
+                    Id = y.Id,
                     Title = y.Title,
                     Description = y.Description,
                     Status = y.Status,
@@ -50,7 +48,7 @@ namespace Application.QueryHandlers
                 }).ToList();
 
             
-            return new PagedResponse<TaskViewModel>(result, Pagination.FromQuery(total, request.PageNo, request.PageSize));
+            return new PagedResponse<TaskViewModel>(result, Pagination.FromQuery(TaskList.Count(), request.PageNo, request.PageSize));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Constant;
+﻿using Application.Commands;
+using Application.Constant;
 using Application.Interface;
 using Application.RequestModel;
 using Application.ResponseModels;
@@ -6,11 +7,13 @@ using AutoMapper;
 using Domain.Models.Identity;
 using Infrastructure.Constant;
 using Infrastructure.Exceptions;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApi.Controllers
 {
@@ -19,6 +22,7 @@ namespace WebApi.Controllers
     public class AuthController : BaseController
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly IMediator _iMediator;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _configuration;
@@ -29,7 +33,7 @@ namespace WebApi.Controllers
         private readonly IPermissionService _permissionService;
         public AuthController(SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<Role> roleManager,
             IConfiguration configuration, IMapper mapper, IAuthService authService, IUserService userService, ILogger<AuthController> logger,
-            IPermissionService permissionService)
+            IPermissionService permissionService, IMediator iMediator)
         {
             _roleManager = roleManager;
             _signInManager = signInManager;
@@ -40,51 +44,32 @@ namespace WebApi.Controllers
             _userService = userService;
             _logger = logger;
             _permissionService = permissionService;
+            _iMediator = iMediator;
         }
+
+    
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public async Task<LoginResponseModel> Login(LoginRequestModel model)
+        public async Task<ActionResult<LoginResponseModel>> Login(LoginCommand command)
         {
-            _logger.LogInformation("User {Email} is login", model.Email);
-            var user = _userManager.Users.SingleOrDefault(x => x.Email == model.Email.Trim() && !x.IsDeleted);
-            if (user == null)
+            var user = await _iMediator.Send(command);
+            
+            return new LoginResponseModel()
             {
-                throw new UnAuthorizedException(MessageConstants.UsernamePasswordDoNotMatch);
-            }
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (result.Succeeded)
-            {
-                return new LoginResponseModel()
-                {
-                    Token = await _authService.GenerateToken(user),
-                    StatusCode = AppStatusCode.SuccessStatusCode.ToString(),
-                    Message = MessageConstants.LoginSuccess,
-                    Permissions = await _permissionService.GetPermissionsByUserId(user.Id),
-                    UserProfile = await _userService.GetUserById(user.Id)
-                };
-            }
-
-            throw new UnAuthorizedException(MessageConstants.UsernamePasswordDoNotMatch);
+                Token = await _authService.GenerateToken(user),
+                StatusCode = AppStatusCode.SuccessStatusCode.ToString(),
+                Message = MessageConstants.LoginSuccess,
+                Permissions = await _permissionService.GetPermissionsByUserId(user.Id),
+                UserProfile = await _userService.GetUserById(user.Id)
+            };
         }
 
+        [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<ActionResult<RegisterResponseModel>> Register(RegisterRequestModel model)
+        public async Task<ActionResult<RegisterResponseModel>> Register(RegisterCommand model)
         {
-            if (await _userManager.Users.AnyAsync(x => x.Email == model.Email.ToLower()))
-            {
-                return BadRequest("Username is taken");
-            }
-            var user = _mapper.Map<User>(model);
-            user.UserName = model.Email.ToLower();
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded) return BadRequest(result.Errors);
-
-            var roleResult = await _userManager.AddToRoleAsync(user, model.RoleName);
-
-            if (!roleResult.Succeeded) return BadRequest(result.Errors);
+            var user = await _iMediator.Send(model);
 
             return new RegisterResponseModel
             {

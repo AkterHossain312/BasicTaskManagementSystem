@@ -13,7 +13,7 @@ namespace Application.Queries
 {
     public class GetAllTaskQuery : IRequest<PagedResponse<TaskViewModel>>
     {
-        public string SearchText { get; set; }
+        public string? SearchText { get; set; }
         public int PageNo { get; set; }
         public int PageSize { get; set; }
         public IPagination ToPagination() => new Pagination(PageNo, PageSize);
