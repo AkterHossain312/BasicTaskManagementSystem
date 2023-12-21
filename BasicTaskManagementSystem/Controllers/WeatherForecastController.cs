@@ -18,7 +18,8 @@ namespace BasicTaskManagementSystem.Controllers
         {
             _logger = logger;
         }
-                
+
+        [Authorize]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {

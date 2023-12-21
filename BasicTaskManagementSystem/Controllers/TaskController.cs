@@ -2,6 +2,7 @@
 using Application.ResponseModels;
 using Application.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace WebApi.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet("GetAllTasks")]
         public async Task<PagedResponse<TaskViewModel>> GetAllUsers([FromQuery] GetAllTaskQuery query)
         {

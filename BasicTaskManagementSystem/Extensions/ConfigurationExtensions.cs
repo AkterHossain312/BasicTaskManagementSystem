@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using WebApi.Constants;
 
 namespace BasicTaskManagementSystem.Extensions;
 
@@ -15,11 +17,7 @@ public static class ConfigurationExtensions
     public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var key = Encoding.ASCII.GetBytes(configuration.GetSection("Token").Value);
-        services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(x =>
             {
                 x.Events = new JwtBearerEvents
@@ -76,6 +74,34 @@ public static class ConfigurationExtensions
 
             // User settings
 
+        });
+        return services;
+    }
+    public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = ConfigurationConstants.SwaggerName, Version = "v1" });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization using the Bearer scheme",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer"
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    }, new List<string>()
+                }
+            });
         });
         return services;
     }
