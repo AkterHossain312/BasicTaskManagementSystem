@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Domain.Models;
 
-namespace Infrastructure.Interface
+namespace Application.Interface
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseModel
     {

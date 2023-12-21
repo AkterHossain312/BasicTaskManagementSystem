@@ -1,10 +1,10 @@
 ﻿using Application.Helper;
+using Application.Interface;
 using AutoMapper;
 using Domain.Helpers;
 using Domain.Models.Identity;
 using Infrastructure;
 using Infrastructure.Constant;
-using Infrastructure.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

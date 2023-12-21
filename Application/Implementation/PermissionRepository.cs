@@ -1,13 +1,9 @@
-﻿using Domain.Models.Identity;
-using Infrastructure.Interface;
+﻿using Application.Interface;
+using Domain.Models.Identity;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Application.Implementation
 {
     public class PermissionRepository : GenericRepository<Permission>, IPermissionRepository
     {

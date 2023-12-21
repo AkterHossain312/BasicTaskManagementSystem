@@ -1,7 +1,6 @@
 ﻿using Application.Interface;
 using Application.ResponseModels;
 using AutoMapper;
-using Infrastructure.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

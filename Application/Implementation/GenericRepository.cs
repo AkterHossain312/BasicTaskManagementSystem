@@ -1,9 +1,10 @@
 ﻿using System.Linq.Expressions;
+using Application.Interface;
 using Domain.Models;
-using Infrastructure.Interface;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Application.Implementation
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseModel
     {

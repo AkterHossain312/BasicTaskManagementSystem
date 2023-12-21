@@ -1,5 +1,5 @@
-﻿using Infrastructure.Interface;
-using Infrastructure.Repositories;
+﻿using Application.Implementation;
+using Application.Interface;
 
 namespace WebApi.DependencieRegister
 {
