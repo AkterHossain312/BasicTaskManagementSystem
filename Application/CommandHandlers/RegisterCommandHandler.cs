@@ -34,6 +34,7 @@ namespace Application.CommandHandlers
         {
             try
             {
+
                 if (await _userManager.Users.AnyAsync(x => x.Email == model.Email.ToLower()))
                 { 
                     throw new Exception("Username is taken");
