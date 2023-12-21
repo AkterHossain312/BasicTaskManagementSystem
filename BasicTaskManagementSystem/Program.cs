@@ -3,6 +3,7 @@ using Application.Mapping;
 using BasicTaskManagementSystem.Extensions;
 using Dependency;
 using System.Configuration;
+using FluentValidation.AspNetCore;
 using Infrastructure.Constant;
 using WebApi.Constants;
 using WebApi.DependencieRegister;
@@ -28,7 +29,11 @@ builder.Services.AddAllRegisterDependencies(builder.Configuration);
 builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddIdentityOptions();
-builder.Services.AddControllers();
+builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true)
+    .AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null)
+    .AddFluentValidation(
+        v => v.RegisterValidatorsFromAssembly(typeof(RegisterApplication).Assembly)
+    );
 builder.Services.AddAuthorization(opt =>
 {
     //opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));

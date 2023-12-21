@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models.Identity;
 
 namespace Domain.Models
 {
@@ -14,6 +15,6 @@ namespace Domain.Models
         public DateTime DueDate { get; set; }
         public StatusEnum Status { get; set; }
         public int UserId { get; set; }
-        public ICollection<UserTask> UserTasks { get; set; }
+        public User User { get; set; }
     }
 }

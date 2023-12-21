@@ -14,6 +14,7 @@ namespace Application.Constant
         public const string RoleNotFound = "Role not found.";
         public const string SaveSuccess = "Successfully saved";
         public const string UpdateSuccess = "Successfully updated";
+        public const string UpdateFailed = "Failed to update";
         public const string DeleteSuccess = "Successfully deleted";
         public const string DeleteFailed = "Failed to delete";
         public const string Failed = "Failed";

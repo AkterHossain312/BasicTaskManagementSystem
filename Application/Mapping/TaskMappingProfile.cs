@@ -13,7 +13,6 @@ namespace Application.Mapping
         public TaskMappingProfile()
         {
             CreateMap<AddTaskCommand, Tasks>();
-            CreateMap<UserTaskCommand, UserTask>();
             CreateMap<UpdateTaskCommand, Tasks>();
             CreateMap<DeleteTaskByIdCommand, Tasks>();
         }

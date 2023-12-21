@@ -12,6 +12,6 @@ namespace Domain.Models.Identity
         public string FullName { get; set; }
         public bool IsDeleted { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
-        public ICollection<UserTask> UsertTasks { get; set; }
+        public ICollection<Tasks> Tasks { get; set; }
     }
 }

@@ -44,26 +44,8 @@ namespace Application.CommandHandlers
             await _context.SaveChangesAsync(cancellationToken);
 
 
-            await SaveDataToUserTaskTable(taskInfo, cancellationToken);
-
-
             return new ApiResponse(MessageConstants.SaveSuccess, ResponseCode.Success); ;
         }
-
-        private async Task SaveDataToUserTaskTable(Tasks taskInfo, CancellationToken cancellationToken)
-        {
-            
-            var userTask = new UserTaskCommand
-            {
-                TaskId = taskInfo.Id,
-                UserId = taskInfo.UserId,
-            };
-
-            var UserTaskInfo = _mapper.Map<UserTask>(userTask);
-
-
-            await _context.AddAsync(UserTaskInfo, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+        
     }
 }

@@ -31,6 +31,12 @@ namespace Infrastructure.Configurations
             builder.Property(p => p.Status)
                 .HasConversion<int>();
 
+            builder
+                .HasOne(t => t.User)         
+                .WithMany(u => u.Tasks)       
+                .HasForeignKey(t => t.UserId) 
+                .IsRequired();
+
         }
     }
 }

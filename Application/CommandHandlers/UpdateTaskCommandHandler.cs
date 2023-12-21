@@ -47,13 +47,14 @@ namespace Application.CommandHandlers
                     updateTaskInfo.UserId = userId;
 
                     _context.Update(updateTaskInfo);
+                    
+                    await _context.SaveChangesAsync(cancellationToken);
+                    return new ApiResponse(MessageConstants.UpdateSuccess, ResponseCode.Success);
 
                 }
 
-                await _context.SaveChangesAsync(cancellationToken);
 
-
-                return new ApiResponse(MessageConstants.UpdateSuccess, ResponseCode.Success);
+                return new ApiResponse(MessageConstants.UpdateFailed, ResponseCode.Failed);
             }
 
             catch (Exception ex)

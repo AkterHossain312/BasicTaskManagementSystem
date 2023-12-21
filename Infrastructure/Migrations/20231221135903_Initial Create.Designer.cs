@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TaskManagementDbContext))]
-    [Migration("20231220213313_Initial Create")]
+    [Migration("20231221135903_Initial Create")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,37 +301,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Models.UserTask", b =>
-                {
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("TaskId", "UserId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTasks", (string)null);
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Identity.RolePermission", b =>
@@ -372,21 +344,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Models.UserTask", b =>
+            modelBuilder.Entity("Domain.Models.Tasks", b =>
                 {
-                    b.HasOne("Domain.Models.Tasks", "Tasks")
-                        .WithMany("UserTasks")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Models.Identity.User", "User")
-                        .WithMany("UsertTasks")
+                        .WithMany("Tasks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Tasks");
 
                     b.Navigation("User");
                 });
@@ -405,14 +369,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Identity.User", b =>
                 {
+                    b.Navigation("Tasks");
+
                     b.Navigation("UserRoles");
-
-                    b.Navigation("UsertTasks");
-                });
-
-            modelBuilder.Entity("Domain.Models.Tasks", b =>
-                {
-                    b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618
         }

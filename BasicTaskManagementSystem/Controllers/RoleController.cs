@@ -17,7 +17,7 @@ namespace WebApi.Controllers
             _roleService = roleService;
         }
 
-        
+        [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] RoleRequestModel model)
         {
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        
+        [AllowAnonymous]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] BaseQuery model)
         {
