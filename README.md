@@ -1,6 +1,8 @@
 # BasicTaskManagementSystem
 Basic Task Management System
 
+***First, please switch to the 'btm_develop' branch and pull the latest changes.
+
 Change Connection String:
 •	Clone the project.
 •	Navigate to the "webapi" project and open appsettings.json.
